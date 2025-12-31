@@ -1,12 +1,46 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common'; // Importante para *ngFor
+import { FormsModule } from '@angular/forms';     // Importante para [(ngModel)]
 import { RouterOutlet } from '@angular/router';
+import { EvaluationService } from './services/evaluation.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true, // Tu proyecto parece ser Standalone
+  imports: [CommonModule, FormsModule, RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrls: ['./app.css']
 })
-export class App {
-  protected readonly title = signal('frontend');
+export class AppComponent {
+  courses = ['Matemáticas I', 'Programación Web', 'Base de Datos', 'Inglés II'];
+  teachers = [{id: 1, name: 'Profesor X'}, {id: 2, name: 'Dra. Y'}, {id: 3, name: 'Mg. Z'}];
+
+  evaluation = {
+    course: 'Programación Web',
+    teacherId: 1,
+    score: 1,
+    comment: ''
+  };
+
+  constructor(private evaluationService: EvaluationService) {}
+
+  submit() {
+    if (!this.evaluation.comment || this.evaluation.comment.length < 5) {
+      Swal.fire('Atención', 'Debes escribir un comentario válido', 'warning');
+      return;
+    }
+
+    this.evaluationService.saveEvaluation(this.evaluation).subscribe({
+      next: () => {
+        Swal.fire('¡Éxito!', 'Tu evaluación ha sido guardada', 'success');
+        this.evaluation.comment = '';
+        this.evaluation.score = 1;
+      },
+      error: (err) => {
+        console.error(err);
+        Swal.fire('Error', 'No se pudo conectar con el servidor', 'error');
+      }
+    });
+  }
 }
