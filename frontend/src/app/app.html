@@ -12,11 +12,10 @@
 
     <div style="margin-bottom: 15px;">
       <label style="display: block; font-weight: bold;">Docente:</label>
-      <select [(ngModel)]="evaluation.teacherId" style="width: 100%; padding: 8px;">
-        <option *ngFor="let t of teachers" [value]="t.id">{{t.name}}</option>
+      <select [(ngModel)]="evaluation.teacher" style="width: 100%; padding: 8px;">
+        <option *ngFor="let t of teachers" [value]="t.name">{{t.name}}</option>
       </select>
     </div>
-
     <div style="margin-bottom: 15px;">
       <label style="display: block; font-weight: bold;">Nota (1 al 7):</label>
       <input type="number" [(ngModel)]="evaluation.score" min="1" max="7" style="width: 100%; padding: 8px;">
@@ -32,3 +31,6 @@
     </button>
   </div>
 </div>
+<hr style="margin: 30px 0; border-top: 1px solid #ddd;">
+
+<app-evaluation-list></app-evaluation-list>
