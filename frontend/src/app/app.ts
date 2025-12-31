@@ -24,10 +24,10 @@ export class AppComponent {
   courses = ['Matemáticas I', 'Programación Web', 'Base de Datos', 'Inglés II'];
   teachers = [{id: 1, name: 'Profesor X'}, {id: 2, name: 'Dra. Y'}, {id: 3, name: 'Mg. Z'}];
 
-  // Configuración corregida para guardar nombres
+  // Configuración FINAL y corregida
   evaluation = {
     course: 'Programación Web',
-    teacher: 'Profesor X', // <--- Guardamos el nombre directo
+    teacher: 'Profesor X', // <--- ¡ESTO asegura que se guarde el nombre y no salga vacío!
     score: 1,
     comment: ''
   };
@@ -44,7 +44,8 @@ export class AppComponent {
     this.evaluationService.saveEvaluation(this.evaluation).subscribe({
       next: () => {
         Swal.fire('¡Éxito!', 'Tu evaluación ha sido guardada', 'success');
-        // Limpiamos el formulario (pero mantenemos valores por defecto útiles)
+        
+        // Limpiamos solo el comentario y la nota, dejamos el curso/profe por defecto
         this.evaluation.comment = '';
         this.evaluation.score = 1;
       },
